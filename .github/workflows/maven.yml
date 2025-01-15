@@ -34,5 +34,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: PlayerIDCounter
-          path: target/player-id-counter-*.jar
+          path: target/CalcStack-*.jar
           if-no-files-found: error
