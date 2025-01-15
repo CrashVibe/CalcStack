@@ -1,0 +1,7 @@
+# 最大堆叠数量设置
+custom-stack-size:
+  enabled: false
+  value: 64
+
+# 每箱的大小（格子数量）
+chest-size: 27

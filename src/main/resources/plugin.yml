@@ -1,0 +1,12 @@
+name: CalcStack
+version: '1.0'
+main: com.example.calcStack.CalcStackPlugin
+api-version: '1.13'
+load: STARTUP
+
+commands:
+  calculate:
+    description: 计算物品堆叠和箱子数量
+    usage: /<command> <数量> 或 /<command> <物品ID> <数量>
+    aliases:
+      - calc

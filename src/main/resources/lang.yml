@@ -1,0 +1,21 @@
+usage: "§e用法: /calculate <数量> 或 /calculate <物品ID> <数量>"
+error:
+  not_player: "§c该指令只能由玩家使用！"
+  no_item_in_hand: "§c请手持一个有效的物品，或在指令中指定物品 ID！"
+  invalid_item: "§c无效的物品 ID: {item}"
+  invalid_number: "§c请输入有效的数量！"
+
+result:
+  header: "§a===== 计算结果 ====="
+  item: "§b物品: {item}"
+  quantity: "§b数量: {quantity}"
+  stacks: "§b堆叠: {stacks} 组 ({stack_size} 个/组)"
+  remaining: "§b剩余: {remaining} 个"
+  chests: "§b需要箱子: {chests} 个 (每个箱子 {chest_size} 格)"
+  footer: "§a===================="
+  ingredients:
+    header: "§a===== 原材料 ====="
+    item: "§b- {ingredient}: {quantity} 个"
+    stacks: "  §7- {stacks} 组 ({stack_size} 个/组)"
+    remaining: "  §7- 剩余 {remaining} 个"
+    chests: "  §7- 需要箱子: {chests} 个 (每个箱子 {chest_size} 格)"
