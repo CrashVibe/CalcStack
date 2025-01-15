@@ -28,6 +28,8 @@ public class CalculateCommand implements TabExecutor {
 
     public CalculateCommand(@Nonnull CalcStackPlugin plugin) {
         this.plugin = plugin;
+        ItemsLangAPI api = ItemsLangAPI.getApi();
+        api.load(Lang.ZH_CN);
         this.chestSize = plugin.getConfig().getInt("chest-size", 27);
         this.customStackSizeEnabled = plugin.getConfig().getBoolean("custom-stack-size.enabled", false);
         this.customStackSize = plugin.getConfig().getInt("custom-stack-size.value", 64);
