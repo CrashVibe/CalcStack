@@ -7,7 +7,7 @@ error:
 
 result:
   header: "§a===== 计算结果 ====="
-  item: "§b物品: {item}"
+  item: "§b物品: {item}({translated_name})"
   quantity: "§b数量: {quantity}"
   stacks: "§b堆叠: {stacks} 组 ({stack_size} 个/组)"
   remaining: "§b剩余: {remaining} 个"
@@ -15,7 +15,7 @@ result:
   footer: "§a===================="
   ingredients:
     header: "§a===== 原材料 ====="
-    item: "§b- {ingredient}: {quantity} 个"
+    item: "§b- {ingredient}({translated_name}): {quantity} 个"
     stacks: "  §7- {stacks} 组 ({stack_size} 个/组)"
     remaining: "  §7- 剩余 {remaining} 个"
     chests: "  §7- 需要箱子: {chests} 个 (每个箱子 {chest_size} 格)"

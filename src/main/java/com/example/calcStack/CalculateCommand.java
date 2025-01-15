@@ -10,11 +10,14 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.Bukkit;
+import me.rubix327.itemslangapi.ItemsLangAPI;
+import me.rubix327.itemslangapi.Lang;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 public class CalculateCommand implements TabExecutor {
 
@@ -79,7 +82,7 @@ public class CalculateCommand implements TabExecutor {
 
             Bukkit.getScheduler().runTask(plugin, () -> {
                 sender.sendMessage(getLangMessage("result.header"));
-                sender.sendMessage(getLangMessage("result.item").replace("{item}", material.name().toLowerCase()));
+                sender.sendMessage(getLangMessage("result.item").replace("{item}", material.name().toLowerCase()).replace("{translated_name}", getTranslatedItemName(material)));
                 sender.sendMessage(getLangMessage("result.quantity").replace("{quantity}", String.valueOf(quantity)));
                 sender.sendMessage(getLangMessage("result.stacks").replace("{stacks}", String.valueOf(totalStacks))
                         .replace("{stack_size}", String.valueOf(maxStackSize)));
@@ -131,7 +134,7 @@ public class CalculateCommand implements TabExecutor {
         int chests = calculateChests(totalStacks, remainingItems, chestSize);
 
         return getLangMessage("result.ingredients.item")
-                .replace("{ingredient}", material.name().toLowerCase())
+                .replace("{ingredient}", material.name().toLowerCase()).replace("{translated_name}", getTranslatedItemName(material))
                 .replace("{quantity}", String.valueOf(quantity))
                 + "\n" + getLangMessage("result.ingredients.stacks")
                 .replace("{stacks}", String.valueOf(totalStacks))
@@ -178,4 +181,11 @@ public class CalculateCommand implements TabExecutor {
         String message = plugin.getLangConfig().getString(path);
         return message != null ? message : "§c配置错误: 未找到语言文件内容 (" + path + ")！";
     }
+
+    private String getTranslatedItemName(Material material) {
+        String translatedName = ItemsLangAPI.getApi().translate(material, Lang.ZH_CN);
+        return translatedName != null ? translatedName : material.name().toLowerCase();
+    }
+
+
 }

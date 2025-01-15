@@ -1,8 +1,10 @@
 name: CalcStack
-version: '1.0'
+version: ${project.version}
 main: com.example.calcStack.CalcStackPlugin
 api-version: '1.13'
 load: STARTUP
+author: Mr.ling - wling
+description: 计算物品堆叠和箱子数量
 
 commands:
   calculate:
