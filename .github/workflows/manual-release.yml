@@ -1,0 +1,76 @@
+name: Manual Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Get version from gradle.properties
+        id: project_version
+        run: echo "version=$(grep '^version=' gradle.properties | cut -d'=' -f2)" >> $GITHUB_OUTPUT
+
+      - name: Check if version already exists
+        id: check_version
+        run: |
+          VERSION=${{ steps.project_version.outputs.version }}
+          if git ls-remote --tags origin | grep -q "refs/tags/v${VERSION}$"; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Version v${VERSION} already exists, skipping release"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Version v${VERSION} is new, will create release"
+          fi
+
+      - name: Package artifacts
+        if: steps.check_version.outputs.exists == 'false'
+        run: gradle package
+
+      - name: Delete existing tag if exists
+        if: steps.check_version.outputs.exists == 'false'
+        run: |
+          VERSION=${{ steps.project_version.outputs.version }}
+          git tag -d "v${VERSION}" 2>/dev/null || true
+          git push origin ":refs/tags/v${VERSION}" 2>/dev/null || true
+        continue-on-error: true
+
+      - name: Create and push tag
+        if: steps.check_version.outputs.exists == 'false'
+        run: |
+          VERSION=${{ steps.project_version.outputs.version }}
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git tag "v${VERSION}"
+          git push origin "v${VERSION}"
+
+      - name: Release
+        if: steps.check_version.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.project_version.outputs.version }}
+          name: v${{ steps.project_version.outputs.version }}
+          draft: false
+          generate_release_notes: true
+          prerelease: false
+          files: outputs/*.jar
