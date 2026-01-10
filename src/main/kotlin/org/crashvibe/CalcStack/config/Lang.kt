@@ -1,4 +1,4 @@
-package org.crashvibe.calStack.config
+package org.crashvibe.CalcStack.config
 
 import de.exlll.configlib.Configuration
 

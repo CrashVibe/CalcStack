@@ -1,4 +1,4 @@
-package org.crashvibe.calStack
+package org.crashvibe.CalcStack
 
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.Recipe
 import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.inventory.ShapelessRecipe
-import org.crashvibe.calStack.config.Config
+import org.crashvibe.CalcStack.config.Config
 import java.util.*
 import java.util.stream.Collectors
 import kotlin.math.ceil
@@ -63,20 +63,29 @@ class Command : TabExecutor {
 
     val chestSize = Config.configData.chest_size
 
-    Bukkit.getScheduler().runTaskAsynchronously(CalStack.instance, Runnable {
+    Bukkit.getScheduler().runTaskAsynchronously(CalcStack.instance, Runnable {
       val maxStackSize =
         if (Config.configData.custom_stacksize.enabled) Config.configData.custom_stacksize.value else material.maxStackSize
       val stackInfo = calculateStackInfo(quantity, maxStackSize, chestSize)
 
       val materialDetails = getCraftingMaterials(material, quantity, maxStackSize, chestSize)
-      Bukkit.getScheduler().runTask(CalStack.instance, Runnable {
+      Bukkit.getScheduler().runTask(CalcStack.instance, Runnable {
         val results = Config.langData.results
         sender.sendMessage(results.header)
-        sender.sendMessage(formatResultMessage(material.name.lowercase(Locale.getDefault()), getTranslatedItemName(material), stackInfo, results.item))
+        sender.sendMessage(
+          formatResultMessage(
+            material.name.lowercase(Locale.getDefault()),
+            getTranslatedItemName(material),
+            stackInfo,
+            results.item
+          )
+        )
         sender.sendMessage(results.quantity.replace("{quantity}", quantity.toString()))
         sender.sendMessage(formatResultMessage(material.name.lowercase(), "", stackInfo, results.stacks))
         sender.sendMessage(results.remaining.replace("{remaining}", stackInfo.remainingItems.toString()))
-        sender.sendMessage(results.chests.replace("{chests}", stackInfo.chests.toString()).replace("{chest_size}", chestSize.toString()))
+        sender.sendMessage(
+          results.chests.replace("{chests}", stackInfo.chests.toString()).replace("{chest_size}", chestSize.toString())
+        )
 
         if (materialDetails.isNotEmpty()) {
           sender.sendMessage(results.ingredients.header)

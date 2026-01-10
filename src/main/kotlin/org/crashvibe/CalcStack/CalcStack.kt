@@ -1,12 +1,12 @@
-package org.crashvibe.calStack
+package org.crashvibe.CalcStack
 
 import org.bstats.bukkit.Metrics
 import org.bukkit.plugin.java.JavaPlugin
-import org.crashvibe.calStack.config.Config
+import org.crashvibe.CalcStack.config.Config
 import java.util.*
 
 
-class CalStack : JavaPlugin() {
+class CalcStack : JavaPlugin() {
   override fun onLoad() {
     instance = this
     Metrics(this, 28779)
@@ -21,7 +21,7 @@ class CalStack : JavaPlugin() {
   }
 
   companion object {
-    lateinit var instance: CalStack
+    lateinit var instance: CalcStack
       private set
   }
 }

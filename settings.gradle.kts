@@ -1,1 +1,1 @@
-rootProject.name = "CalStack"
+rootProject.name = "CalcStack"

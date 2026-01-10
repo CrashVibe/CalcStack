@@ -1,6 +1,6 @@
-name: CalStack
+name: CalcStack
 version: ${version}
-main: org.crashvibe.calStack.CalStack
+main: org.crashvibe.CalcStack.CalcStack
 description: 计算物品堆叠和箱子数量
 api-version: '1.13'
 folia-supported: true
