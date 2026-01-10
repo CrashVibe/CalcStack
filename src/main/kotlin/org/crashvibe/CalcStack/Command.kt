@@ -81,7 +81,7 @@ class Command : TabExecutor {
           )
         )
         sender.sendMessage(results.quantity.replace("{quantity}", quantity.toString()))
-        sender.sendMessage(formatResultMessage(material.name.lowercase(), "", stackInfo, results.stacks))
+        sender.sendMessage(formatResultMessage(material.name.lowercase(), null, stackInfo, results.stacks))
         sender.sendMessage(results.remaining.replace("{remaining}", stackInfo.remainingItems.toString()))
         sender.sendMessage(
           results.chests.replace("{chests}", stackInfo.chests.toString()).replace("{chest_size}", chestSize.toString())
@@ -194,14 +194,13 @@ fun getCraftingMaterials(
   }
 }
 
-
 fun formatResultMessage(
   ingredient: String,
-  translatedName: String = "",
+  translatedName: Component?,
   stackInfo: StackInfo,
   template: String
-): String {
-  return template
+): Component {
+  val base = template
     .replace("{item}", ingredient)
     .replace("{ingredient}", ingredient)
     .replace("{quantity}", stackInfo.totalStacks.toString())
@@ -210,13 +209,25 @@ fun formatResultMessage(
     .replace("{remaining}", stackInfo.remainingItems.toString())
     .replace("{chests}", stackInfo.chests.toString())
     .replace("{chest_size}", Config.configData.chest_size.toString())
-    .let { if (translatedName.isNotEmpty()) it.replace("{translated_name}", translatedName) else it }
+  return if (translatedName != null) {
+    Component.text(base).replaceText { builder ->
+      builder.matchLiteral("{translated_name}").replacement(translatedName)
+    }
+  } else {
+    Component.text(base)
+  }
 }
 
 fun formatMaterialComponent(material: Material, stackInfo: StackInfo): Component {
   val translated = material.itemTranslationKey?.let { Component.translatable(it) }
     ?: Component.text(material.name.lowercase(Locale.getDefault()))
-  val template = Config.langData.results.ingredients.item
+
+  val itemTpl = Config.langData.results.ingredients.item
+  val stacksTpl = Config.langData.results.ingredients.stacks
+  val remainingTpl = Config.langData.results.ingredients.remaining
+  val chestsTpl = Config.langData.results.ingredients.chests
+
+  val template = listOf(itemTpl, stacksTpl, remainingTpl, chestsTpl).joinToString("\n")
     .replace("{ingredient}", material.name.lowercase(Locale.getDefault()))
     .replace("{quantity}", stackInfo.totalStacks.toString())
     .replace("{stacks}", stackInfo.totalStacks.toString())
@@ -224,12 +235,16 @@ fun formatMaterialComponent(material: Material, stackInfo: StackInfo): Component
     .replace("{remaining}", stackInfo.remainingItems.toString())
     .replace("{chests}", stackInfo.chests.toString())
     .replace("{chest_size}", Config.configData.chest_size.toString())
+
   return Component.text(template).replaceText { builder ->
     builder.matchLiteral("{translated_name}").replacement(translated)
   }
 }
 
-
-private fun getTranslatedItemName(material: Material): String {
-  return material.itemTranslationKey ?: material.name.lowercase(Locale.getDefault())
+private fun getTranslatedItemName(material: Material): Component {
+  return material.itemTranslationKey?.let { Component.translatable(it) } ?: Component.text(
+    material.name.lowercase(
+      Locale.getDefault()
+    )
+  )
 }

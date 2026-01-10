@@ -19,21 +19,21 @@ data class Lang(
   @Configuration
   data class Results(
     var header: String = "§a===== 计算结果 =====",
-    var item: String = "§b物品: {item}({translated_name})",
-    var quantity: String = "§b数量: {quantity}",
-    var stacks: String = "§b堆叠: {stacks} 组 ({stack_size} 个/组)",
-    var remaining: String = "§b剩余: {remaining} 个",
-    var chests: String = "§b需要箱子: {chests} 个 (每个箱子 {chest_size} 格)",
-    var footer: String = "§a====================",
+    var item: String = "§b物品: §r{item}§b(§r{translated_name}§b)",
+    var quantity: String = "§b数量: §r{quantity}",
+    var stacks: String = "§b堆叠: §r{stacks} §b组 (§r{stack_size} §b个/组)",
+    var remaining: String = "§b剩余: §r{remaining} §b个",
+    var chests: String = "§b需要箱子: §r{chests} §b个 (每个箱子 §r{chest_size} §b格)",
     var ingredients: Ingredients = Ingredients(),
+    var footer: String = "§a====================",
   ) {
     @Configuration
     data class Ingredients(
       var header: String = "§a===== 原材料 =====",
-      var item: String = "§b- {ingredient}({translated_name}): {quantity} 个",
-      var stacks: String = "  §7- {stacks} 组 ({stack_size} 个/组)",
-      var remaining: String = "  §7- 剩余 {remaining} 个",
-      var chests: String = "  §7- 需要箱子: {chests} 个 (每个箱子 {chest_size} 格)",
+      var item: String = "§b- §r{ingredient}§b(§r{translated_name}§b): §r{quantity} §b个",
+      var stacks: String = "  §7- §r{stacks} §7组 (§r{stack_size} §7个/组)",
+      var remaining: String = "  §7- 剩余 §r{remaining} §7个",
+      var chests: String = "  §7- 需要箱子: §r{chests} §7个 (每个箱子 §r{chest_size} §7格)",
     )
   }
 }
