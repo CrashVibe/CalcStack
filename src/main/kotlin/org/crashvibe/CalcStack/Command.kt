@@ -139,9 +139,11 @@ fun calculateStackInfo(quantity: Int, maxStackSize: Int, chestSize: Int): StackI
 
 fun getIngredientsFromRecipe(recipe: Recipe): MutableList<ItemStack> {
   return when (recipe) {
-    is ShapedRecipe -> recipe.choiceMap.values.mapNotNull { choice ->
-      getRepresentativeItem(choice)
-    }.toMutableList()
+    is ShapedRecipe -> recipe.choiceMap.values
+      .filterNotNull()
+      .mapNotNull { choice ->
+        getRepresentativeItem(choice)
+      }.toMutableList()
 
     is ShapelessRecipe -> recipe.choiceList.mapNotNull { choice ->
       getRepresentativeItem(choice)
