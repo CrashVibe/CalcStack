@@ -76,3 +76,15 @@ jobs:
           generate_release_notes: true
           prerelease: false
           files: outputs/*.jar
+
+      - uses: Kir-Antipov/mc-publish@v3.3
+        if: steps.check_version.outputs.exists == 'false'
+        with:
+          game-versions: ">=1.18 <=1.21.11"
+          loaders: |
+            paper
+            folia
+          version: ${{ steps.project_version.outputs.version }}
+          files: outputs/*.jar
+          modrinth-id: KrhHEilB
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
