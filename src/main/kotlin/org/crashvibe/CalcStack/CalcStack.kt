@@ -12,10 +12,10 @@ class CalcStack : JavaPlugin() {
     instance = this
     folialLib = FoliaLib(this)
     Metrics(this, 28779)
+    Config.init(dataFolder.toPath())
   }
 
   override fun onEnable() {
-    Config.init(dataFolder.toPath())
     Objects.requireNonNull(getCommand("calculate"))?.setExecutor(Command())
   }
 
