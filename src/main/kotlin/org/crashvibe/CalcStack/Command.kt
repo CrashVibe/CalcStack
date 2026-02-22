@@ -63,38 +63,48 @@ class Command : TabExecutor {
 
     val chestSize = Config.configData.chest_size
 
-    Bukkit.getScheduler().runTaskAsynchronously(CalcStack.instance, Runnable {
+    CalcStack.folialLib.scheduler.runAsync{
       val maxStackSize =
         if (Config.configData.custom_stacksize.enabled) Config.configData.custom_stacksize.value else material.maxStackSize
       val stackInfo = calculateStackInfo(quantity, maxStackSize, chestSize)
 
       val materialDetails = getCraftingMaterials(material, quantity, maxStackSize, chestSize)
-      Bukkit.getScheduler().runTask(CalcStack.instance, Runnable {
-        val results = Config.langData.results
-        sender.sendMessage(results.header)
-        sender.sendMessage(
-          formatResultMessage(
-            material.name.lowercase(Locale.getDefault()),
-            getTranslatedItemName(material),
-            stackInfo,
-            results.item
-          )
+      val results = Config.langData.results
+      sender.sendMessage(results.header)
+      sender.sendMessage(
+        formatResultMessage(
+          material.name.lowercase(Locale.getDefault()),
+          getTranslatedItemName(material),
+          stackInfo,
+          results.item
         )
-        sender.sendMessage(results.quantity.replace("{quantity}", quantity.toString()))
-        sender.sendMessage(formatResultMessage(material.name.lowercase(), null, stackInfo, results.stacks))
-        sender.sendMessage(results.remaining.replace("{remaining}", stackInfo.remainingItems.toString()))
-        sender.sendMessage(
-          results.chests.replace("{chests}", stackInfo.chests.toString()).replace("{chest_size}", chestSize.toString())
+      )
+      sender.sendMessage(results.quantity.replace("{quantity}", quantity.toString()))
+      sender.sendMessage(
+        formatResultMessage(
+          material.name.lowercase(),
+          null,
+          stackInfo,
+          results.stacks
         )
+      )
+      sender.sendMessage(
+        results.remaining.replace(
+          "{remaining}",
+          stackInfo.remainingItems.toString()
+        )
+      )
+      sender.sendMessage(
+        results.chests.replace("{chests}", stackInfo.chests.toString())
+          .replace("{chest_size}", chestSize.toString())
+      )
 
-        if (materialDetails.isNotEmpty()) {
-          sender.sendMessage(results.ingredients.header)
-          materialDetails.forEach(sender::sendMessage)
-        }
-        sender.sendMessage(results.footer)
-      })
+      if (materialDetails.isNotEmpty()) {
+        sender.sendMessage(results.ingredients.header)
+        materialDetails.forEach(sender::sendMessage)
+      }
+      sender.sendMessage(results.footer)
     }
-    )
 
     return true
   }

@@ -11,10 +11,12 @@ description = properties["description"].toString()
 repositories {
   mavenCentral()
   maven("https://repo.papermc.io/repository/maven-public/")
+  maven("https://repo.tcoded.com/releases")
 }
 
 dependencies {
   implementation("de.exlll:configlib-yaml:4.6.1")
+  implementation("com.tcoded:FoliaLib:0.5.1")
   implementation("org.bstats:bstats-bukkit:3.1.0")
   compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
 }
@@ -47,6 +49,8 @@ tasks {
     archiveFileName = "${rootProject.name}-paper-${project.version}.${archiveExtension.get()}"
     exclude("META-INF/**")
     relocate("org.bstats", "${project.group}.libs.bstats")
+    relocate("de.exlll.configlib", "${project.group}.libs.configlib")
+    relocate("com.tcoded.folialib", "${project.group}.lib.folialib")
   }
 
   processResources {
