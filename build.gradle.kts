@@ -44,7 +44,7 @@ tasks {
   }
 
   shadowJar {
-    archiveFileName = "${rootProject.name}-bukkit-${project.version}.${archiveExtension.get()}"
+    archiveFileName = "${rootProject.name}-paper-${project.version}.${archiveExtension.get()}"
     exclude("META-INF/**")
     relocate("org.bstats", "${project.group}.libs.bstats")
   }
